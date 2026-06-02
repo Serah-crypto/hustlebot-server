@@ -52,14 +52,7 @@ app.post("/ask", async (req, res) => {
         const result = await response.json();
         
         // Log the full Groq response so we can see any errors
-        console.log("Groq response status:", response.status);
-        console.log("Groq result:", JSON.stringify(result));
-        
-        if (!response.ok) {
-            console.error("Groq error:", JSON.stringify(result.error));
-            return res.json({ reply: "Groq API error: " + (result.error?.message ?? "Unknown") });
-        }
-        
+               
         const reply = result.choices?.[0]?.message?.content
             ?? "Sorry, I couldn't generate a response.";
         res.json({ reply });
