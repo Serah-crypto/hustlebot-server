@@ -53,11 +53,11 @@ app.post("/ask", async (req, res) => {
         const reply = result.choices?.[0]?.message?.content
             ?? "Sorry, I couldn't generate a response.";
         res.json({ reply });
-
-    } catch (err) {
-        console.error(err);
+} catch (err) {
+        console.error("Full error:", JSON.stringify(err.message));
+        console.error("Stack:", err.stack);
         res.status(500).json({ error: "Server error. Please try again." });
-    }
+       }
 });
 
 const PORT = process.env.PORT || 3000;
