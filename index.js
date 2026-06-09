@@ -3,6 +3,8 @@ const app = express();
 app.use(express.json());
 
 const GROQ_KEY = process.env.GROQ_KEY;
+const mpesaRoutes = require('./mpesa');
+app.use('/', mpesaRoutes);
 
 app.post("/ask", async (req, res) => {
     try {
@@ -12,8 +14,7 @@ app.post("/ask", async (req, res) => {
             return res.status(400).json({ error: "Question is required." });
         }
 
-        const mpesaRoutes = require('./mpesa');
-        app.use('/', mpesaRoutes);  
+        
 
         // Build messages
         const messages = [
