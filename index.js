@@ -12,6 +12,9 @@ app.post("/ask", async (req, res) => {
             return res.status(400).json({ error: "Question is required." });
         }
 
+        const mpesaRoutes = require('./mpesa');
+        app.use('/', mpesaRoutes);  
+
         // Build messages
         const messages = [
             {
@@ -62,6 +65,17 @@ app.post("/ask", async (req, res) => {
         res.status(500).json({ error: "Server error. Please try again." });
        }
 });
+
+const https = require('https');
+
+// Keep Render awake (ping every 14 minutes)
+setInterval(() => {
+    https.get('https://hustlebot-server.onrender.com/health', () => {
+        console.log('Keep-alive ping sent');
+    }).on('error', () => {});
+}, 14 * 60 * 1000);
+
+app.get('/health', (req, res) => res.json({ status: 'ok' }));
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`HustleBot server running on port ${PORT}`));
