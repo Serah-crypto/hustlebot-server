@@ -48,15 +48,12 @@ router.post('/mpesa/stk-push', async (req, res) => {
 router.get('/mpesa/status/:uid', async (req, res) => {
     try {
         const { uid } = req.params;
-        const snapshot = await admin.database().ref(`payments/${checkoutId}`).update({ status: 'completed' });
-        const payment  = snapshot.val();
-
+        const snapshot = await admin.database().ref(`payments/${uid}`).get();
+        const payment = snapshot.val();
         if (!payment) {
             return res.json({ status: 'not_found' });
         }
-
         res.json({ status: payment.status, amount: payment.amount, timestamp: payment.timestamp });
-
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
